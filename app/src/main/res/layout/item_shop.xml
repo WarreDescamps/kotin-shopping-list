@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/tvItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:layout_constraintHorizontal_weight="0.66"
+        app:layout_constraintEnd_toStartOf="@+id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvShop"
+        app:layout_constraintBottom_toBottomOf="@+id/tvShop"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        app:barrierDirection="left"
+        app:layout_constraintStart_toEndOf="@+id/tvItem"
+        app:layout_constraintEnd_toStartOf="@id/tvShop"
+        app:layout_constraintTop_toTopOf="@id/tvItem"
+        app:layout_constraintBottom_toBottomOf="@id/tvItem"/>
+
+    <TextView
+        android:id="@+id/tvShop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginStart="10dp"
+        app:layout_constraintHorizontal_weight="0.33"
+        app:layout_constraintEnd_toStartOf="@+id/cbDone"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tvItem" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/mdCrossOutLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="1dp"
+        app:dividerColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/tvShop"
+        app:layout_constraintStart_toStartOf="@+id/tvItem"
+        app:layout_constraintTop_toTopOf="@+id/tvItem"
+        app:layout_constraintBottom_toBottomOf="@+id/tvItem" />
+
+    <CheckBox
+        android:id="@+id/cbDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/tvShop"
+        app:layout_constraintBottom_toBottomOf="@+id/tvShop"
+        app:layout_constraintEnd_toEndOf="@+id/ibCross"
+        app:layout_constraintTop_toTopOf="@+id/tvShop" />
+
+    <ImageButton
+        android:id="@+id/ibCross"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:src="@drawable/cross"
+        app:layout_constraintBottom_toBottomOf="@+id/tvShop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cbDone"
+        app:layout_constraintTop_toTopOf="@+id/tvShop" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

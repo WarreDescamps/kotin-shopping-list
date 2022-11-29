@@ -28,14 +28,14 @@ class MainViewModel : ViewModel() {
             ShoppingListOnLongClickListener { context, position ->
                 onLongClick(context, position)
             },
-            ShoppingListOnIsCheckedChanged { shoppingList, isChecked, materialDivider, position ->
-                onIsCheckedChanged(shoppingList, isChecked, materialDivider, position)
+            ShoppingListOnIsCheckedChanged {isChecked, materialDivider, position ->
+                onIsCheckedChanged(isChecked, materialDivider, position)
             }
         )
         _adapter.submitList(shoppingList)
     }
 
-    private fun onIsCheckedChanged(shoppingList: List<ShopItem>, isChecked : Boolean, materialDivider: MaterialDivider, position: Int) {
+    private fun onIsCheckedChanged(isChecked : Boolean, materialDivider: MaterialDivider, position: Int) {
         shoppingList[position].isDone = isChecked
         if (isChecked) {
             materialDivider.visibility = View.VISIBLE
@@ -47,7 +47,7 @@ class MainViewModel : ViewModel() {
 
     private fun onLongClick(context: Context, position: Int) : Boolean {
         val builder = AlertDialog.Builder(context)
-        builder.setMessage("This will delete ${"test"} from your list!\nAre you sure?")
+        builder.setMessage("This will delete '${shoppingList[position].item} in ${shoppingList[position].shop}' from your list!\nAre you sure?")
             .setPositiveButton("Yes") { dialog, _ ->
                 removeItem(position)
                 dialog.dismiss()

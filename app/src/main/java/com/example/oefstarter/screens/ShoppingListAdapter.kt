@@ -36,10 +36,9 @@ class ShoppingListAdapter (private val onLongClickListener: ShoppingListOnLongCl
             tvShop.text = shoppingList[position].shop
             var cbDone = findViewById<CheckBox>(R.id.cbDone)
             cbDone.isChecked = shoppingList[position].isDone
-            onIsCheckedChanged.onIsCheckChanged(shoppingList, shoppingList[position].isDone, findViewById(R.id.mdCrossOutLine), position)
+            onIsCheckedChanged.onIsCheckChanged(shoppingList[position].isDone, findViewById(R.id.mdCrossOutLine), position)
             cbDone.setOnCheckedChangeListener { _, isChecked ->
                 onIsCheckedChanged.onIsCheckChanged(
-                    shoppingList,
                     isChecked,
                     findViewById(R.id.mdCrossOutLine),
                     holder.layoutPosition)
@@ -57,8 +56,8 @@ class ShoppingListOnLongClickListener(private val longClickListener: (context: C
     fun onLongClick(context: Context, position: Int): Boolean = longClickListener(context, position)
 }
 
-class ShoppingListOnIsCheckedChanged(private val isCheckedChanged: (shoppingList: List<ShopItem>, isChecked : Boolean, materialDivider: MaterialDivider, position: Int) -> Unit) {
-    fun onIsCheckChanged(shoppingList: List<ShopItem>, isChecked : Boolean, materialDivider: MaterialDivider, position: Int) = isCheckedChanged(shoppingList, isChecked, materialDivider, position)
+class ShoppingListOnIsCheckedChanged(private val isCheckedChanged: (isChecked : Boolean, materialDivider: MaterialDivider, position: Int) -> Unit) {
+    fun onIsCheckChanged(isChecked : Boolean, materialDivider: MaterialDivider, position: Int) = isCheckedChanged(isChecked, materialDivider, position)
 }
 
 class ShopItemDiffCallback : DiffUtil.ItemCallback<ShopItem>() {

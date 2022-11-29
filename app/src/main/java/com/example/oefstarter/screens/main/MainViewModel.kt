@@ -20,10 +20,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun initAdapter() {
-        shoppingList = mutableListOf<ShopItem>()
-        for (i in 0..30) {
-            shoppingList.add(ShopItem(allGroceries[i % allGroceries.size], allShops[Random.nextInt(allShops.size)], Random.nextBoolean()))
-        }
+        shoppingList = ShoppingListData.getShoppingList(1).toMutableList()
         _adapter = ShoppingListAdapter(shoppingList)
     }
 

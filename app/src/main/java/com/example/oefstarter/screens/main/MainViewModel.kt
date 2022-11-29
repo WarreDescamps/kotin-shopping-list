@@ -32,7 +32,7 @@ class MainViewModel : ViewModel() {
                 onIsCheckedChanged(shoppingList, isChecked, materialDivider, position)
             }
         )
-        _adapter.feedData(shoppingList)
+        _adapter.submitList(shoppingList)
     }
 
     private fun onIsCheckedChanged(shoppingList: List<ShopItem>, isChecked : Boolean, materialDivider: MaterialDivider, position: Int) {

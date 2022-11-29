@@ -6,17 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oefstarter.R
 import com.example.oefstarter.models.ShopItem
 import com.google.android.material.divider.MaterialDivider
 
-class ShoppingListAdapter (private val onLongClickListener: ShoppingListOnLongClickListener, private val onIsCheckedChanged: ShoppingListOnIsCheckedChanged) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
+class ShoppingListAdapter (private val onLongClickListener: ShoppingListOnLongClickListener, private val onIsCheckedChanged: ShoppingListOnIsCheckedChanged) : ListAdapter<ShopItem, ShoppingListAdapter.ShoppingListViewHolder>(ShopItemDiffCallback()) {
     inner class ShoppingListViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView)
-    private lateinit var shoppingList : List<ShopItem>
+    private lateinit var shoppingList : MutableList<ShopItem>
 
-    fun feedData(data: List<ShopItem>) {
-        shoppingList = data
+    override fun submitList(list: MutableList<ShopItem>?) {
+        if (list != null)
+            shoppingList = list
+        super.submitList(list)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListViewHolder {
@@ -55,4 +59,15 @@ class ShoppingListOnLongClickListener(private val longClickListener: (context: C
 
 class ShoppingListOnIsCheckedChanged(private val isCheckedChanged: (shoppingList: List<ShopItem>, isChecked : Boolean, materialDivider: MaterialDivider, position: Int) -> Unit) {
     fun onIsCheckChanged(shoppingList: List<ShopItem>, isChecked : Boolean, materialDivider: MaterialDivider, position: Int) = isCheckedChanged(shoppingList, isChecked, materialDivider, position)
+}
+
+class ShopItemDiffCallback : DiffUtil.ItemCallback<ShopItem>() {
+
+    override fun areItemsTheSame(oldItem: ShopItem, newItem: ShopItem): Boolean {
+        return oldItem == newItem
+    }
+
+    override fun areContentsTheSame(oldItem: ShopItem, newItem: ShopItem): Boolean {
+        return oldItem.item == newItem.item && oldItem.shop == newItem.shop && oldItem.isDone == newItem.isDone
+    }
 }

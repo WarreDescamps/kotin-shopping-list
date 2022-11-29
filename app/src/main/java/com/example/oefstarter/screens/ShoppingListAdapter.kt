@@ -4,15 +4,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oefstarter.R
 import com.example.oefstarter.models.ShopItem
 import com.google.android.material.divider.MaterialDivider
 
-class ShoppingListAdapter (var shoppingList : MutableList<ShopItem>) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
+class ShoppingListAdapter () : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
     inner class ShoppingListViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView)
+    private lateinit var shoppingList : MutableList<ShopItem>
+
+    fun feedData(list: Collection<ShopItem>) {
+        shoppingList = list.toMutableList()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shop, parent, false)
@@ -26,12 +30,12 @@ class ShoppingListAdapter (var shoppingList : MutableList<ShopItem>) : RecyclerV
             var tvShop = findViewById<TextView>(R.id.tvShop)
             tvShop.text = shoppingList[position].shop
             var cbDone = findViewById<CheckBox>(R.id.cbDone)
-            cbDone.setOnCheckedChangeListener { _, isChecked -> onIsCheckedChanged(isChecked, findViewById(
-                R.id.mdCrossOutLine
-            ), holder.layoutPosition) }
+            cbDone.setOnCheckedChangeListener { _, isChecked ->
+                onIsCheckedChanged(isChecked,
+                    findViewById(R.id.mdCrossOutLine),
+                    holder.layoutPosition)
+            }
             cbDone.isChecked = shoppingList[position].isDone
-            var ibCross = findViewById<ImageButton>(R.id.ibCross)
-            ibCross.setOnClickListener { remove(holder.layoutPosition) }
         }
     }
 

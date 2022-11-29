@@ -1,12 +1,9 @@
 package com.example.oefstarter.screens.main
 
 import androidx.lifecycle.ViewModel
-import com.example.oefstarter.allGroceries
-import com.example.oefstarter.allShops
 import com.example.oefstarter.models.ShopItem
 import com.example.oefstarter.screens.ShoppingListAdapter
 import com.example.oefstarter.utils.ShoppingListData
-import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
     private lateinit var shoppingList : MutableList<ShopItem>
@@ -21,7 +18,8 @@ class MainViewModel : ViewModel() {
 
     private fun initAdapter() {
         shoppingList = ShoppingListData.getShoppingList(1).toMutableList()
-        _adapter = ShoppingListAdapter(shoppingList)
+        _adapter = ShoppingListAdapter()
+        _adapter.feedData(shoppingList)
     }
 
     fun addItem(item : String, shop : String) {

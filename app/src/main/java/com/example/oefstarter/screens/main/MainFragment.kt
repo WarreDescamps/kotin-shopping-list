@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.oefstarter.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels { MainViewModelFactory() }
     private lateinit var binding: FragmentMainBinding
 
     override fun onCreateView(

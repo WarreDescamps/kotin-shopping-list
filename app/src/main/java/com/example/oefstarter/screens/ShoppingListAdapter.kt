@@ -15,8 +15,8 @@ class ShoppingListAdapter (private val onLongClickListener: ShoppingListOnLongCl
     inner class ShoppingListViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView)
     private lateinit var shoppingList : List<ShopItem>
 
-    fun feedData(list: List<ShopItem>) {
-        shoppingList = list
+    fun feedData(data: List<ShopItem>) {
+        shoppingList = data
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListViewHolder {
@@ -31,6 +31,8 @@ class ShoppingListAdapter (private val onLongClickListener: ShoppingListOnLongCl
             var tvShop = findViewById<TextView>(R.id.tvShop)
             tvShop.text = shoppingList[position].shop
             var cbDone = findViewById<CheckBox>(R.id.cbDone)
+            cbDone.isChecked = shoppingList[position].isDone
+            onIsCheckedChanged.onIsCheckChanged(shoppingList, shoppingList[position].isDone, findViewById(R.id.mdCrossOutLine), position)
             cbDone.setOnCheckedChangeListener { _, isChecked ->
                 onIsCheckedChanged.onIsCheckChanged(
                     shoppingList,
@@ -38,7 +40,6 @@ class ShoppingListAdapter (private val onLongClickListener: ShoppingListOnLongCl
                     findViewById(R.id.mdCrossOutLine),
                     holder.layoutPosition)
             }
-            cbDone.isChecked = shoppingList[position].isDone
             setOnLongClickListener { onLongClickListener.onLongClick(this.context, holder.layoutPosition) }
         }
     }

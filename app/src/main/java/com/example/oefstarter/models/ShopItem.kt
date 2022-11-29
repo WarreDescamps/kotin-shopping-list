@@ -1,4 +1,4 @@
-package com.example.oefstarter
+package com.example.oefstarter.models
 
 class ShopItem (
     val item : String,

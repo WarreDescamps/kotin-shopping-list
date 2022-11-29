@@ -1,4 +1,4 @@
-package com.example.oefstarter
+package com.example.oefstarter.screens
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,8 @@ import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.oefstarter.R
+import com.example.oefstarter.models.ShopItem
 import com.google.android.material.divider.MaterialDivider
 
 class ShoppingListAdapter (var shoppingList : MutableList<ShopItem>) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
@@ -24,7 +26,9 @@ class ShoppingListAdapter (var shoppingList : MutableList<ShopItem>) : RecyclerV
             var tvShop = findViewById<TextView>(R.id.tvShop)
             tvShop.text = shoppingList[position].shop
             var cbDone = findViewById<CheckBox>(R.id.cbDone)
-            cbDone.setOnCheckedChangeListener { _, isChecked -> onIsCheckedChanged(isChecked, findViewById(R.id.mdCrossOutLine), holder.layoutPosition) }
+            cbDone.setOnCheckedChangeListener { _, isChecked -> onIsCheckedChanged(isChecked, findViewById(
+                R.id.mdCrossOutLine
+            ), holder.layoutPosition) }
             cbDone.isChecked = shoppingList[position].isDone
             var ibCross = findViewById<ImageButton>(R.id.ibCross)
             ibCross.setOnClickListener { remove(holder.layoutPosition) }

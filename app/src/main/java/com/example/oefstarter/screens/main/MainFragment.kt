@@ -1,6 +1,5 @@
-package com.example.oefstarter
+package com.example.oefstarter.screens.main
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater

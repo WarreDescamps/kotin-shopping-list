@@ -1,10 +1,11 @@
-package com.example.oefstarter
+package com.example.oefstarter.screens.main
 
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.oefstarter.databinding.FragmentMainBinding
+import com.example.oefstarter.allGroceries
+import com.example.oefstarter.allShops
+import com.example.oefstarter.models.ShopItem
+import com.example.oefstarter.screens.ShoppingListAdapter
+import com.example.oefstarter.utils.ShoppingListData
 import kotlin.random.Random
 
 class MainViewModel : ViewModel() {

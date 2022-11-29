@@ -1,5 +1,6 @@
 package com.example.oefstarter.screens
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,12 @@ import com.example.oefstarter.R
 import com.example.oefstarter.models.ShopItem
 import com.google.android.material.divider.MaterialDivider
 
-class ShoppingListAdapter () : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
+class ShoppingListAdapter (private val onLongClickListener: ShoppingListOnLongClickListener, private val onIsCheckedChanged: ShoppingListOnIsCheckedChanged) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
     inner class ShoppingListViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView)
-    private lateinit var shoppingList : MutableList<ShopItem>
+    private lateinit var shoppingList : List<ShopItem>
 
-    fun feedData(list: Collection<ShopItem>) {
-        shoppingList = list.toMutableList()
+    fun feedData(list: List<ShopItem>) {
+        shoppingList = list
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListViewHolder {
@@ -31,30 +32,26 @@ class ShoppingListAdapter () : RecyclerView.Adapter<ShoppingListAdapter.Shopping
             tvShop.text = shoppingList[position].shop
             var cbDone = findViewById<CheckBox>(R.id.cbDone)
             cbDone.setOnCheckedChangeListener { _, isChecked ->
-                onIsCheckedChanged(isChecked,
+                onIsCheckedChanged.onIsCheckChanged(
+                    shoppingList,
+                    isChecked,
                     findViewById(R.id.mdCrossOutLine),
                     holder.layoutPosition)
             }
             cbDone.isChecked = shoppingList[position].isDone
+            setOnLongClickListener { onLongClickListener.onLongClick(this.context, holder.layoutPosition) }
         }
-    }
-
-    private fun onIsCheckedChanged(isChecked : Boolean, materialDivider: MaterialDivider, position: Int) {
-        shoppingList[position].isDone = isChecked
-        if (isChecked) {
-            materialDivider.visibility = View.VISIBLE
-        }
-        else {
-            materialDivider.visibility = View.GONE
-        }
-    }
-
-    private fun remove(position : Int) {
-        shoppingList.removeAt(position)
-        notifyItemRemoved(position)
     }
 
     override fun getItemCount(): Int {
         return shoppingList.size
     }
+}
+
+class ShoppingListOnLongClickListener(private val longClickListener: (context: Context, position: Int) -> Boolean) {
+    fun onLongClick(context: Context, position: Int): Boolean = longClickListener(context, position)
+}
+
+class ShoppingListOnIsCheckedChanged(private val isCheckedChanged: (shoppingList: List<ShopItem>, isChecked : Boolean, materialDivider: MaterialDivider, position: Int) -> Unit) {
+    fun onIsCheckChanged(shoppingList: List<ShopItem>, isChecked : Boolean, materialDivider: MaterialDivider, position: Int) = isCheckedChanged(shoppingList, isChecked, materialDivider, position)
 }

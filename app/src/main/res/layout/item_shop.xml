@@ -44,7 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="1dp"
-        app:dividerColor="@color/black"
+        app:dividerColor="#434242"
         app:layout_constraintEnd_toEndOf="@+id/tvShop"
         app:layout_constraintStart_toStartOf="@+id/tvItem"
         app:layout_constraintTop_toTopOf="@+id/tvItem"
@@ -56,17 +56,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/tvShop"
         app:layout_constraintBottom_toBottomOf="@+id/tvShop"
-        app:layout_constraintEnd_toEndOf="@+id/ibCross"
-        app:layout_constraintTop_toTopOf="@+id/tvShop" />
-
-    <ImageButton
-        android:id="@+id/ibCross"
-        android:layout_width="30dp"
-        android:layout_height="33dp"
-        android:src="@drawable/cross"
-        app:layout_constraintBottom_toBottomOf="@+id/tvShop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cbDone"
         app:layout_constraintTop_toTopOf="@+id/tvShop" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

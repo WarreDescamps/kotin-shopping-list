@@ -1,7 +1,7 @@
 package com.example.oefstarter.utils
 
-import com.example.oefstarter.allGroceries
-import com.example.oefstarter.allShops
+import com.example.oefstarter.models.allGroceries
+import com.example.oefstarter.models.allShops
 import com.example.oefstarter.models.ShopItem
 import kotlin.random.Random
 

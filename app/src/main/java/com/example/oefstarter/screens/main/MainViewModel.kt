@@ -2,7 +2,6 @@ package com.example.oefstarter.screens.main
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.view.View
 import androidx.lifecycle.ViewModel
 import com.example.oefstarter.models.ShopItem

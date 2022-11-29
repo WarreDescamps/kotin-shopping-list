@@ -3,7 +3,6 @@ package com.example.oefstarter.screens.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.oefstarter.databinding.ActivityMainBinding
-import com.example.oefstarter.databinding.FragmentMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding

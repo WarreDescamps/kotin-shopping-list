@@ -7,16 +7,22 @@ import kotlin.random.Random
 
 class ShoppingListData {
     companion object {
-        fun getShoppingList(userId: Long): List<ShopItem>{
+        private val list = seed()
+
+        private fun seed() : List<ShopItem> {
             val shoppingList = mutableListOf<ShopItem>()
             for (i in 0..30) {
                 shoppingList.add(
                     ShopItem(
-                    allGroceries[i % allGroceries.size], allShops[Random.nextInt(
-                        allShops.size)], Random.nextBoolean())
+                        allGroceries[i % allGroceries.size], allShops[Random.nextInt(
+                            allShops.size)], Random.nextBoolean())
                 )
             }
             return shoppingList
+        }
+
+        fun getShoppingList(id: Long): List<ShopItem>{
+            return list
         }
     }
 }

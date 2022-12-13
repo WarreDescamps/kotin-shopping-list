@@ -16,8 +16,8 @@ class MainViewModel : ViewModel() {
     private var _adapter = ShoppingListAdapter(ShoppingListOnLongClickListener {
                                 onLongClick(it)
                                 },
-                                ShoppingListOnCheckedChanged {
-                                    onIsCheckedChanged(it)
+                                ShoppingListOnCheckedChanged { shopItem, isChecked ->
+                                    onIsCheckedChanged(shopItem, isChecked)
                                 })
     val adapter : ShoppingListAdapter
         get() = _adapter
@@ -47,7 +47,10 @@ class MainViewModel : ViewModel() {
         return true
     }
 
-    private fun onIsCheckedChanged(shopItem: ShopItem) {
+    private fun onIsCheckedChanged(shopItem: ShopItem, isChecked: Boolean) {
+        if (shopItem.isDone == isChecked)
+            return
+        shopItem.isDone = isChecked
         val index = shoppingList.value?.indexOf(shopItem) ?: 0
         _adapter.notifyItemChanged(index)
     }

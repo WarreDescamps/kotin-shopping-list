@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="@{shopItem.done}"
-            android:onCheckedChanged="@{() -> onCheckedChangedListener.onCheckChanged()}"
+            android:onCheckedChanged="@{(_, isChecked) -> onCheckedChangedListener.onCheckChanged(shopItem, isChecked)}"
             app:layout_constraintStart_toEndOf="@+id/tvShop"
             app:layout_constraintBottom_toBottomOf="@+id/tvShop"
             app:layout_constraintEnd_toEndOf="parent"

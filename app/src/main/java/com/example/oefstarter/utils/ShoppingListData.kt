@@ -1,5 +1,7 @@
 package com.example.oefstarter.utils
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.oefstarter.models.allGroceries
 import com.example.oefstarter.models.allShops
 import com.example.oefstarter.models.ShopItem
@@ -21,7 +23,9 @@ class ShoppingListData {
             return shoppingList
         }
 
-        fun getShoppingList(id: Long): List<ShopItem>{
+        fun getShoppingList(id: Long): LiveData<List<ShopItem>> {
+            var list = MutableLiveData<List<ShopItem>>()
+            list.value = this.list
             return list
         }
     }

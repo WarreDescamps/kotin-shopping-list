@@ -1,63 +1,51 @@
 package com.example.oefstarter.screens
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.TextView
+import android.widget.CompoundButton
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.example.oefstarter.R
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.oefstarter.databinding.ItemShopBinding
 import com.example.oefstarter.models.ShopItem
-import com.google.android.material.divider.MaterialDivider
 
-class ShoppingListAdapter (private val onLongClickListener: ShoppingListOnLongClickListener, private val onIsCheckedChanged: ShoppingListOnIsCheckedChanged) : ListAdapter<ShopItem, ShoppingListAdapter.ShoppingListViewHolder>(ShopItemDiffCallback()) {
-    inner class ShoppingListViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView)
-    private lateinit var shoppingList : MutableList<ShopItem>
-
-    override fun submitList(list: MutableList<ShopItem>?) {
-        if (list != null)
-            shoppingList = list
-        super.submitList(list)
-    }
-
+class ShoppingListAdapter (private val onLongClickListener: ShoppingListOnLongClickListener, private val onCheckedChangedListener: ShoppingListOnCheckedChanged) : ListAdapter<ShopItem, ShoppingListAdapter.ShoppingListViewHolder>(ShopItemDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shop, parent, false)
-        return ShoppingListViewHolder(view)
+        return ShoppingListViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ShoppingListViewHolder, position: Int) {
-        holder.itemView.apply {
-            var tvItem = findViewById<TextView>(R.id.tvItem)
-            tvItem.text = shoppingList[position].item
-            var tvShop = findViewById<TextView>(R.id.tvShop)
-            tvShop.text = shoppingList[position].shop
-            var cbDone = findViewById<CheckBox>(R.id.cbDone)
-            cbDone.isChecked = shoppingList[position].isDone
-            onIsCheckedChanged.onIsCheckChanged(shoppingList[position].isDone, findViewById(R.id.mdCrossOutLine), position)
-            cbDone.setOnCheckedChangeListener { _, isChecked ->
-                onIsCheckedChanged.onIsCheckChanged(
-                    isChecked,
-                    findViewById(R.id.mdCrossOutLine),
-                    holder.layoutPosition)
+        holder.bind(getItem(position)!!, onLongClickListener, onCheckedChangedListener)
+    }
+
+    class ShoppingListViewHolder private constructor(val binding: ItemShopBinding) : ViewHolder(binding.root) {
+
+        fun bind(
+            shopItem: ShopItem,
+            onLongClickListener: ShoppingListOnLongClickListener,
+            onCheckedChangedListener: ShoppingListOnCheckedChanged
+        ) {
+            binding.shopItem = shopItem
+            binding.onLongClickListener = onLongClickListener
+            binding.onCheckedChangedListener = onCheckedChangedListener
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ShoppingListViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ItemShopBinding.inflate(layoutInflater, parent, false)
+                return ShoppingListViewHolder(binding)
             }
-            setOnLongClickListener { onLongClickListener.onLongClick(this.context, holder.layoutPosition) }
         }
     }
-
-    override fun getItemCount(): Int {
-        return shoppingList.size
-    }
 }
 
-class ShoppingListOnLongClickListener(private val longClickListener: (context: Context, position: Int) -> Boolean) {
-    fun onLongClick(context: Context, position: Int): Boolean = longClickListener(context, position)
+class ShoppingListOnLongClickListener(private val longClickListener: (shopItem: ShopItem) -> Boolean) {
+    fun onLongClick(shopItem: ShopItem): Boolean = longClickListener(shopItem)
 }
 
-class ShoppingListOnIsCheckedChanged(private val isCheckedChanged: (isChecked : Boolean, materialDivider: MaterialDivider, position: Int) -> Unit) {
-    fun onIsCheckChanged(isChecked : Boolean, materialDivider: MaterialDivider, position: Int) = isCheckedChanged(isChecked, materialDivider, position)
+class ShoppingListOnCheckedChanged(private val onCheckedChangedListener: (shopItem: ShopItem) -> Unit) {
+    fun onCheckChanged(shopItem: ShopItem) = onCheckedChangedListener(shopItem)
 }
 
 class ShopItemDiffCallback : DiffUtil.ItemCallback<ShopItem>() {

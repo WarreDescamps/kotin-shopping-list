@@ -1,62 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="10dp">
-
-    <TextView
-        android:id="@+id/tvItem"
-        android:layout_width="0dp"
+    >
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="shopItem"
+            type="com.example.oefstarter.models.ShopItem" />
+        <variable
+            name="onLongClickListener"
+            type="com.example.oefstarter.screens.ShoppingListOnLongClickListener" />
+        <variable
+            name="onCheckedChangedListener"
+            type="com.example.oefstarter.screens.ShoppingListOnCheckedChanged" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        app:layout_constraintHorizontal_weight="0.66"
-        app:layout_constraintEnd_toStartOf="@+id/divider"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvShop"
-        app:layout_constraintBottom_toBottomOf="@+id/tvShop"/>
+        android:paddingTop="10dp"
+        android:onLongClick="@{() -> onLongClickListener.onLongClick(shopItem)}">
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/divider"
-        android:layout_width="2dp"
-        android:layout_height="0dp"
-        app:barrierDirection="left"
-        app:layout_constraintStart_toEndOf="@+id/tvItem"
-        app:layout_constraintEnd_toStartOf="@id/tvShop"
-        app:layout_constraintTop_toTopOf="@id/tvItem"
-        app:layout_constraintBottom_toBottomOf="@id/tvItem"/>
+        <TextView
+            android:id="@+id/tvItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@{shopItem.item}"
+            app:layout_constraintHorizontal_weight="0.66"
+            app:layout_constraintEnd_toStartOf="@+id/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvShop"
+            app:layout_constraintBottom_toBottomOf="@+id/tvShop"/>
 
-    <TextView
-        android:id="@+id/tvShop"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginStart="10dp"
-        app:layout_constraintHorizontal_weight="0.33"
-        app:layout_constraintEnd_toStartOf="@+id/cbDone"
-        app:layout_constraintStart_toEndOf="@+id/divider"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/tvItem" />
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            app:barrierDirection="left"
+            app:layout_constraintStart_toEndOf="@+id/tvItem"
+            app:layout_constraintEnd_toStartOf="@id/tvShop"
+            app:layout_constraintTop_toTopOf="@id/tvItem"
+            app:layout_constraintBottom_toBottomOf="@id/tvItem"/>
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/mdCrossOutLine"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="1dp"
-        app:dividerColor="#434242"
-        app:layout_constraintEnd_toEndOf="@+id/tvShop"
-        app:layout_constraintStart_toStartOf="@+id/tvItem"
-        app:layout_constraintTop_toTopOf="@+id/tvItem"
-        app:layout_constraintBottom_toBottomOf="@+id/tvItem" />
+        <TextView
+            android:id="@+id/tvShop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginStart="10dp"
+            android:text="@{shopItem.shop}"
+            app:layout_constraintHorizontal_weight="0.33"
+            app:layout_constraintEnd_toStartOf="@+id/cbDone"
+            app:layout_constraintStart_toEndOf="@+id/divider"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tvItem" />
 
-    <CheckBox
-        android:id="@+id/cbDone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/tvShop"
-        app:layout_constraintBottom_toBottomOf="@+id/tvShop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvShop" />
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/mdCrossOutLine"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:visibility="@{shopItem.done ? View.VISIBLE : View.GONE}"
+            app:dividerColor="#434242"
+            app:layout_constraintEnd_toEndOf="@+id/tvShop"
+            app:layout_constraintStart_toStartOf="@+id/tvItem"
+            app:layout_constraintTop_toTopOf="@+id/tvItem"
+            app:layout_constraintBottom_toBottomOf="@+id/tvItem" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <CheckBox
+            android:id="@+id/cbDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="@{shopItem.done}"
+            android:onCheckedChanged="@{() -> onCheckedChangedListener.onCheckChanged()}"
+            app:layout_constraintStart_toEndOf="@+id/tvShop"
+            app:layout_constraintBottom_toBottomOf="@+id/tvShop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvShop" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,55 +1,42 @@
 package com.example.oefstarter.screens.main
 
+import ShoppingListApplication
 import android.app.AlertDialog
-import android.content.Context
-import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.oefstarter.models.ShopItem
 import com.example.oefstarter.screens.ShoppingListAdapter
-import com.example.oefstarter.screens.ShoppingListOnIsCheckedChanged
+import com.example.oefstarter.screens.ShoppingListOnCheckedChanged
 import com.example.oefstarter.screens.ShoppingListOnLongClickListener
 import com.example.oefstarter.utils.ShoppingListData
-import com.google.android.material.divider.MaterialDivider
 
 class MainViewModel : ViewModel() {
-    private lateinit var shoppingList : MutableList<ShopItem>
+    private var _shoppingList = ShoppingListData.getShoppingList(1)
 
-    private lateinit var _adapter : ShoppingListAdapter
+    private var _adapter = ShoppingListAdapter(ShoppingListOnLongClickListener {
+                                onLongClick(it)
+                                },
+                                ShoppingListOnCheckedChanged {
+                                    onIsCheckedChanged(it)
+                                })
     val adapter : ShoppingListAdapter
         get() = _adapter
 
-    init {
-        initAdapter()
+    val shoppingList: LiveData<List<ShopItem>>
+    get() {
+        return _shoppingList
     }
 
-    private fun initAdapter() {
-        shoppingList = ShoppingListData.getShoppingList(1).toMutableList()
-        _adapter = ShoppingListAdapter(
-            ShoppingListOnLongClickListener { context, position ->
-                onLongClick(context, position)
-            },
-            ShoppingListOnIsCheckedChanged {isChecked, materialDivider, position ->
-                onIsCheckedChanged(isChecked, materialDivider, position)
-            }
-        )
-        _adapter.submitList(shoppingList)
-    }
-
-    private fun onIsCheckedChanged(isChecked : Boolean, materialDivider: MaterialDivider, position: Int) {
-        shoppingList[position].isDone = isChecked
-        if (isChecked) {
-            materialDivider.visibility = View.VISIBLE
-        }
-        else {
-            materialDivider.visibility = View.GONE
-        }
-    }
-
-    private fun onLongClick(context: Context, position: Int) : Boolean {
-        val builder = AlertDialog.Builder(context)
-        builder.setMessage("This will delete '${shoppingList[position].item} in ${shoppingList[position].shop}' from your list!\nAre you sure?")
+    private fun onLongClick(shopItem: ShopItem) : Boolean {
+        val builder = AlertDialog.Builder(ShoppingListApplication.appContext)
+        builder.setMessage("This will delete '${shopItem.item} in ${shopItem.shop}' from your list!\nAre you sure?")
             .setPositiveButton("Yes") { dialog, _ ->
-                removeItem(position)
+                shoppingList.value?.toMutableList().apply {
+                    this?.remove(shopItem)
+                }
+                val index = shoppingList.value?.indexOf(shopItem)
+                if (index != null)
+                    adapter.notifyItemRemoved(index)
                 dialog.dismiss()
             }
             .setNegativeButton("No") { dialog, _ ->
@@ -60,13 +47,18 @@ class MainViewModel : ViewModel() {
         return true
     }
 
-    fun addItem(item : String, shop : String) {
-        shoppingList.add(ShopItem(item, shop, false))
-        adapter.notifyItemInserted(shoppingList.size - 1)
+    private fun onIsCheckedChanged(shopItem: ShopItem) {
+        val index = shoppingList.value?.indexOf(shopItem) ?: 0
+        _adapter.notifyItemChanged(index)
     }
 
-    fun removeItem(index : Int) {
-        shoppingList.removeAt(index)
-        adapter.notifyItemRemoved(index)
+    fun addItem(item : String, shop : String) {
+        shoppingList.value?.toMutableList().apply {
+            this?.add(ShopItem(item, shop, false))
+        }
+        val size = shoppingList.value?.size?.minus(1)
+        if (size != null) {
+            adapter.notifyItemInserted(size)
+        }
     }
 }

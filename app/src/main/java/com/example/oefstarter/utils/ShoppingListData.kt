@@ -9,24 +9,36 @@ import kotlin.random.Random
 
 class ShoppingListData {
     companion object {
-        private val list = seed()
+        private val list: MutableLiveData<MutableList<ShopItem>> = seed()
 
-        private fun seed() : List<ShopItem> {
+        private fun seed() : MutableLiveData<MutableList<ShopItem>> {
             val shoppingList = mutableListOf<ShopItem>()
-            for (i in 0..30) {
+            for (i in 0..10) {
                 shoppingList.add(
                     ShopItem(
                         allGroceries[i % allGroceries.size], allShops[Random.nextInt(
                             allShops.size)], Random.nextBoolean())
                 )
             }
-            return shoppingList
+            val list = MutableLiveData<MutableList<ShopItem>>()
+            list.value = shoppingList
+            return list
         }
 
-        fun getShoppingList(id: Long): LiveData<List<ShopItem>> {
-            var list = MutableLiveData<List<ShopItem>>()
-            list.value = this.list
+        fun getShoppingList(id: Long): LiveData<MutableList<ShopItem>> {
             return list
+        }
+
+        fun addShoppingListItem(shopItem: ShopItem) {
+            val oldValue = list.value ?: mutableListOf()
+            oldValue.add(shopItem)
+            list.value = oldValue
+        }
+
+        fun removeShoppingListItem(shopItem: ShopItem) {
+            val oldValue = list.value ?: mutableListOf()
+            oldValue.remove(shopItem)
+            list.value = oldValue
         }
     }
 }

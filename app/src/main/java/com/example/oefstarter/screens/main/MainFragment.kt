@@ -1,5 +1,6 @@
 package com.example.oefstarter.screens.main
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.oefstarter.databinding.FragmentMainBinding
 import com.example.oefstarter.screens.ShoppingListAdapter
 import com.example.oefstarter.screens.ShoppingListOnLongClickListener
+import com.example.oefstarter.utils.ShoppingListData
 
 class MainFragment : Fragment() {
     private val viewModel: MainViewModel by viewModels { MainViewModelFactory() }
@@ -20,6 +22,8 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.alertBuilder = AlertDialog.Builder(context)
+
         binding = FragmentMainBinding.inflate(layoutInflater)
 
         binding.recyclerView.adapter = viewModel.adapter

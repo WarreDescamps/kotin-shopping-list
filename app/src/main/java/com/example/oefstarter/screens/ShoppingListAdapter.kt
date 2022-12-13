@@ -44,8 +44,8 @@ class ShoppingListOnLongClickListener(private val longClickListener: (shopItem: 
     fun onLongClick(shopItem: ShopItem): Boolean = longClickListener(shopItem)
 }
 
-class ShoppingListOnCheckedChanged(private val onCheckedChangedListener: (shopItem: ShopItem) -> Unit) {
-    fun onCheckChanged(shopItem: ShopItem) = onCheckedChangedListener(shopItem)
+class ShoppingListOnCheckedChanged(private val onCheckedChangedListener: (shopItem: ShopItem, isChecked: Boolean) -> Unit) {
+    fun onCheckChanged(shopItem: ShopItem, isChecked: Boolean) = onCheckedChangedListener(shopItem, isChecked)
 }
 
 class ShopItemDiffCallback : DiffUtil.ItemCallback<ShopItem>() {

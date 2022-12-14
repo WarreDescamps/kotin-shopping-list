@@ -21,12 +21,12 @@ class UserData {
             return users.value?.firstOrNull { user -> user.email == email && user.password == password }
         }
 
-        fun getUsers(): LiveData<Map<Int, String>> {
-            val safeUser = mutableMapOf<Int, String>()
+        fun getUsers(): LiveData<Map<Long, String>> {
+            val safeUser = mutableMapOf<Long, String>()
             for (user in users.value ?: mutableListOf()) {
                 safeUser.put(user.id, user.email)
             }
-            val list = MutableLiveData<Map<Int, String>>()
+            val list = MutableLiveData<Map<Long, String>>()
             list.value = safeUser
             return list
         }

@@ -8,7 +8,9 @@ import com.example.oefstarter.models.ShopItem
 import com.example.oefstarter.screens.ShoppingListAdapter
 import com.example.oefstarter.screens.ShoppingListOnCheckedChanged
 import com.example.oefstarter.screens.ShoppingListOnLongClickListener
+import com.example.oefstarter.screens.UserSingelton
 import com.example.oefstarter.utils.ShoppingListData
+import com.example.oefstarter.utils.UserData
 
 class MainViewModel : ViewModel() {
     private var _adapter = ShoppingListAdapter(ShoppingListOnLongClickListener { shopItem ->
@@ -20,7 +22,7 @@ class MainViewModel : ViewModel() {
     val adapter : ShoppingListAdapter
         get() = _adapter
 
-    private var _shoppingList = ShoppingListData.getShoppingList(1)
+    private lateinit var _shoppingList: LiveData<MutableList<ShopItem>>
     val shoppingList: LiveData<MutableList<ShopItem>>
     get() {
         return _shoppingList
@@ -33,6 +35,11 @@ class MainViewModel : ViewModel() {
     }
     set(value) {
         _alertBuilder = value
+    }
+
+    init {
+        val user = UserSingelton.instance().user
+        if (user != null) ShoppingListData.getShoppingList(user.id)
     }
 
     private fun onLongClick(shopItem: ShopItem) : Boolean {
@@ -61,7 +68,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun addItem(item : String, shop : String) {
-        ShoppingListData.addShoppingListItem(ShopItem(item, shop, false))
+        val user = UserSingelton.instance().user ?: return
+        ShoppingListData.addShoppingListItem(ShopItem(user.id, item, shop, false))
         val size = shoppingList.value?.size?.minus(1)
         if (size != null) {
             adapter.notifyItemInserted(size)

@@ -12,12 +12,15 @@ class ShoppingListData {
         private val list: MutableLiveData<MutableList<ShopItem>> = seed()
 
         private fun seed() : MutableLiveData<MutableList<ShopItem>> {
+            val users = UserData.getUsers().value?.keys ?: return MutableLiveData<MutableList<ShopItem>>()
             val shoppingList = mutableListOf<ShopItem>()
-            for (i in 0..10) {
+            for (i in 0..20) {
                 shoppingList.add(
                     ShopItem(
-                        allGroceries[i % allGroceries.size], allShops[Random.nextInt(
-                            allShops.size)], Random.nextBoolean())
+                        users.elementAt(Random.nextInt(1, users.size + 1)),
+                        allGroceries[i % allGroceries.size],
+                        allShops[Random.nextInt(allShops.size)], Random.nextBoolean()
+                    )
                 )
             }
             val list = MutableLiveData<MutableList<ShopItem>>()
@@ -25,7 +28,13 @@ class ShoppingListData {
             return list
         }
 
-        fun getShoppingList(id: Long): LiveData<MutableList<ShopItem>> {
+        fun getShoppingList(id: Long): LiveData<List<ShopItem>> {
+            val userShoppingList = mutableListOf<ShopItem>()
+            for (shopItem in list.value ?: mutableListOf()) {
+                userShoppingList.add(shopItem)
+            }
+            val list = MutableLiveData<List<ShopItem>>()
+            list.value = userShoppingList
             return list
         }
 

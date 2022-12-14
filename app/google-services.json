@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "552829782319",
+    "project_id": "ios-app-v2-3841a",
+    "storage_bucket": "ios-app-v2-3841a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552829782319:android:50fcc11a481ce56188f9da",
+        "android_client_info": {
+          "package_name": "com.example.oefstarter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552829782319-mf93sifp2dl9occlf0jjo2oh7p4sucgd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlGPltlYj6jKNEKB5RBWjNwRFXPN88PV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "552829782319-mf93sifp2dl9occlf0jjo2oh7p4sucgd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

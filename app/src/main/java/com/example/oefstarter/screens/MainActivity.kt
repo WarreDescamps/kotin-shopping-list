@@ -1,4 +1,4 @@
-package com.example.oefstarter.screens.main
+package com.example.oefstarter.screens
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
